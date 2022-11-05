@@ -3,10 +3,10 @@ const fs = require('fs');
 const { readdir, mkdir, readFile, writeFile } = require('fs/promises');
 
 const projectDist = path.join(__dirname, 'project-dist');
-const styles = path.join(__dirname, 'project-dist', 'style.css')
-const html = path.join(__dirname, 'project-dist', 'index.html')
+const styles = path.join(__dirname, 'project-dist', 'style.css');
+const html = path.join(__dirname, 'project-dist', 'index.html');
 
-const sourceFolder = path.join(__dirname, 'styles');
+const stylesFolder = path.join(__dirname, 'styles');
 const componentsHTML = {};
 
 
@@ -33,14 +33,29 @@ async function buildHTML() {
 }
 
 
+async function buildStyles() {
+  const sourceFiles = await readdir(stylesFolder, {withFileTypes: true});
+  let cssData = '';
+
+  try {
+    for (let file of sourceFiles) {
+      if (file.isFile() && path.extname(file.name) === '.css') {
+        const sourceFile = path.join(stylesFolder, file.name);
+        cssData += await readFile(sourceFile, { encoding: 'utf8' });
+      }
+    }
+    
+    await writeFile(styles, cssData);
+  } catch (err) {
+    console.error(err.message);
+  }
+}
+
+
 async function copyAssetsFolder() {
 
 }
 
 
-async function buldStyles() {
-
-}
-
-
 buildHTML();
+buildStyles();
