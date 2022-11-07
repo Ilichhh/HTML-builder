@@ -6,24 +6,17 @@ const sourceFolder = path.join(__dirname, 'files');
 const newFolder = path.join(__dirname, 'files-copy');
 
 
-async function createDir() {
+async function copyFiles(sourceFiles) {
   try {
     await mkdir(newFolder, { recursive: true });
-  } catch (err) {
-    console.error(err.message);
-  }
-}
-
-async function copyFiles(sourceFiles) {
-  for (let file of sourceFiles) {
-    try {
+    for (let file of sourceFiles) {
       const sourceFile = path.join(sourceFolder, file);
       const newFile = path.join(newFolder, file);
       await copyFile(sourceFile, newFile);
       console.log(`${file} was copied`);
-    } catch (err) {
-      console.error(err.message);
     }
+  } catch (err) {
+    console.error(err.message);
   }
 }
 
@@ -42,7 +35,6 @@ async function deleteFiles(sourceFiles) {
 
 async function copyDir () {
   const sourceFiles = await readdir(sourceFolder);
-  await createDir();
   await copyFiles(sourceFiles);
   await deleteFiles(sourceFiles);
 }
