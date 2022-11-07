@@ -8,7 +8,7 @@ const bundle = path.join(__dirname, 'project-dist', 'bundle.css')
 
 async function deleteBoundle() {
   fs.unlink(bundle, (err) => {
-    if (err) console.error(err.message);
+    err ? console.log(`bundle.css not found, creating...`) : console.log(`bundle.css recreated`);
   });
 }
 
@@ -28,7 +28,7 @@ async function copyFiles() {
             }
           );
         })
-        rs.on('end', () => console.log(`${file.name} added to boundle.css`));
+        rs.on('end', () => console.log(`${file.name} added to bundle.css`));
       }
     } catch (err) {
       console.error(err.message);
