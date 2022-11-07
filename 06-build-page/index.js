@@ -25,6 +25,7 @@ async function buildHTML() {
       }
     }
     await writeFile(html, htmlData);
+    console.log('index.html created');
 
   } catch (err) {
     console.error(err);
@@ -45,6 +46,7 @@ async function buildStyles() {
       }
     }
     await writeFile(styles, cssData);
+    console.log('style.css created');
 
   } catch (err) {
     console.error(err.message);
@@ -64,6 +66,7 @@ async function copyAssetsFolder(folder='') {
       const newFile = path.join(distAssetsFolder, file.name);
       file.isFile() ? await copyFile(sourceFile, newFile) : copyAssetsFolder(file.name);
     }
+    console.log(`${folder || 'assets'} folder copied`);
 
   } catch (err) {
     console.error(err.message);
